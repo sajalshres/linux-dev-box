@@ -1,0 +1,10 @@
+# vscode
+*.code-workspace
+
+# log files
+*.log
+
+# vagrant
+.vagrant/
+
+

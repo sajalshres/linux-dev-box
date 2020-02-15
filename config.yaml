@@ -1,0 +1,12 @@
+api_version: 2
+vm:
+  base_box: 'ubuntu/bionic64'
+  name: 'nvUbuntuDev01'
+  gui: true
+  cpus: 2
+  memory: 4096
+  disk_size: '40GB'
+user:
+  name: 'developer'
+  uid: 9090
+  gid: 9090
