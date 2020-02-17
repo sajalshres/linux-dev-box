@@ -24,7 +24,7 @@ vagrant up --provision
 vagrant provision
 ```
 
-> Note:
+## Note:
 > This project is still a Work-In-Progress(WIP)
 > We are currently building a script to install all the prerequisites in a single `powershell` or `python` script
 
