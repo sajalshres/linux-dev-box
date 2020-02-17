@@ -9,3 +9,5 @@ apt-get clean -y
 rm -rf /var/lib/apt/lists/*
 # Clean up pip bootstrap file
 rm -rf /tmp/get-pip.py
+# Restart
+shutdown -r now

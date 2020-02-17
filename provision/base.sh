@@ -1,6 +1,5 @@
 #!/bin/sh
 set -ex
-
 # Update package index
 apt-get update
 # Allow apt to use repository over HTTPS

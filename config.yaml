@@ -1,12 +1,92 @@
 api_version: 2
 vm:
   base_box: 'ubuntu/bionic64'
+  base_box_version: '20200206.0.0'
   name: 'nvUbuntuDev01'
-  gui: true
   cpus: 2
   memory: 4096
   disk_size: '40GB'
-user:
-  name: 'developer'
-  uid: 9090
-  gid: 9090
+  providers:
+    virtualbox:
+      gui: false
+  network:
+    ports:
+      - host: 8000
+        guest: 8000
+      - host: 3000
+        guest: 3000
+  # TODO: ssh not implemented yet.
+  ssh:
+    user:
+      username: developer
+      uid: 9090
+      gid: 9090
+provisioners:
+  - base:
+      enable: true
+      before: :all
+      type: shell
+      path: provision/base.sh
+      privileged: true
+  - python:
+      enable: true
+      type: shell
+      path: provision/python.sh
+      privileged: true
+  - docker:
+      enable: true
+      type: shell
+      path: provision/docker.sh
+      privileged: true
+  # TODO: Check for following npm error:
+  ## Command: npm install -g eslint
+  ## Error: 429 Too Many Requests - GET https://registry.npmjs.org/strip-ansi
+  - web-development:
+      enable: true
+      type: shell
+      path: provision/web-development.sh
+      privileged: true
+  - desktop:
+      enable: true
+      type: shell
+      path: provision/desktop.sh
+      privileged: true
+  # TODO: Not proud of this implementation, change later.
+  - user:
+      enable: true
+      type: shell
+      path: provision/user.sh
+      privileged: true
+      arguments:
+        - value: user=developer
+        - value: uid=9090
+        - value: gid=9090
+  - git:
+      enable: true
+      type: shell
+      path: provision/git.sh
+      privileged: false
+      arguments:
+        # Github user name
+        - value: username=YOUR-GIT-USERNAME
+        # Github email
+        - value: email=YOUR-GIT-EMAIL
+        # Personal access api token
+        # Personal access token can be used in place of password
+        # More info: https://help.github.com/en/github/authenticating-to-github/creating-a-personal-access-token-for-the-command-line
+        # Get your token: https://github.com/settings/tokens
+        - value: token=YOUR-TOKEN-ID
+  - repositories:
+      enable: true
+      type: shell
+      path: provision/repositories.sh
+      privileged: false
+      arguments:
+        # Your git repositories
+        - value: git@github.com:sajalshres/cornerstone.git
+  - clean-up:
+      enable: true
+      after: :all
+      type: shell
+      path: provision/clean-up.sh
+      privileged: true

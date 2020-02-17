@@ -3,67 +3,136 @@
 
 require 'yaml'
 
-# Load config
+###############################################################################
+# Load configuration
+###############################################################################
 current_dir = File.dirname(File.expand_path(__FILE__))
-config = YAML.load_file("#{current_dir}/config.yaml")
+all_config = YAML.load_file("#{current_dir}/config.yaml")
 
-# Virtual machine configuration
-vm_config = config['vm']
+###############################################################################
+# Utility functions
+###############################################################################
 
-# User config
-user_config = config['user']
+# Convert the shell provisioner arguments from configuration file
+# into an array for the vagrant shell provisioner
+def shell_provisioner_args(yaml_arguments)
+    shell_arguments = Array.new
 
+    # Arguments may or may not be named,
+    # and named arguments may or may not have a value.
+    yaml_arguments.each do |argument|
+        argument.key?('name') && shell_arguments.push(argument['name'])
+        argument.key?('value') && shell_arguments.push(argument['value'])
+    end
 
-# Configure Vagrant
-Vagrant.configure(config['api_version']) do |config|
+    shell_arguments
+end
+
+###############################################################################
+# Vagrant setup functions
+###############################################################################
+
+# Setup VM base config
+def setup_basic_config(config, vm_config)
     # Vargrant Box
     config.vm.box = vm_config['base_box']
-    
+    config.vm.box_version = vm_config['base_box_version']
+        
     # Vagrant box name
     config.vm.define vm_config['name']
 
-    # Set virtual machine name
+    # Setup virtual machine name
     config.vm.host_name = vm_config['name']
 
     # [Optional] Set disk size
     # Note: vagrant plugin install vagrant-disksize
     config.disksize.size = vm_config['disk_size']
-    
-    # Setup virtual box provider
-    config.vm.provider "virtualbox" do |vb|
+end
+
+# Setup provider
+def setup_provider(config, vm_config)
+    providers = vm_config['providers']
+    providers && providers.each do |type, params|
+        config.vm.provider type do |provider|
+            params.each do |key, value|
+                provider.send("#{key}=", value)
+            end
+        end
+    end
+
+    # Provider specific configuration
+    config.vm.provider 'virtualbox' do |vb|
         vb.name = vm_config['name']
-        vb.gui = vm_config['gui']
-        vb.cpus = vm_config['cpus']
-        vb.memory = vm_config['memory']
+        vb.customize [ 'modifyvm', :id, '--cpus', vm_config['cpus'] ]
+        vb.customize [ 'modifyvm', :id, '--memory', vm_config['memory'] ]
         # Additional customizations
         # Shared clipboard
         vb.customize ['modifyvm', :id, '--clipboard', 'bidirectional']
     end
-
-    # Setup networking
-    config.vm.network :forwarded_port, guest: 8000, host: 8000
-
-    # Setup provisioning
-
-    # Setup base provisioning
-    config.vm.provision "base", before: :all, type: "shell", path: "provision/base.sh"
-
-    # Setup python development provisioning
-    config.vm.provision "python", type: "shell", path: "provision/python.sh"
-
-    # Setup docker provisioning
-    config.vm.provision "docker", type:"shell", path: "provision/docker.sh"
-    
-    # Setup web development provisioning
-    config.vm.provision "web-development", type:"shell", path: "provision/web-development.sh"
-
-    # Setup web development provisioning
-    config.vm.provision "desktop", type:"shell", path: "provision/desktop.sh"
-
-    # Setup user provisioning
-    # config.vm.provision "user", type:"shell", path: "provision/user.sh", :args => [USER_NAME, USER_UID, USER_GID]
-
-    # Setup clean up of provisioning
-    config.vm.provision "clean-up", after: :all, type:"shell", path: "provision/clean-up.sh"
 end
 
+# Setup forwarded ports
+def setup_network_forwarded_port(config, ports)
+    ports && ports.each do |port|
+        config.vm.network :forwarded_port, guest: port['guest'], host: port['host']
+    end
+end
+
+# Setup provision
+def setup_provisioners(config, provisioners)
+    provisioners && provisioners.each do |provisioner|
+        provisioner.each do |provisioner_name, provisioner_detail|
+            if provisioner_detail['enable']
+                if provisioner_detail['type'] == 'shell'
+                    if provisioner_detail['arguments']
+                        config.vm.provision provisioner_name, 
+                            type:"shell", 
+                            path: provisioner_detail['path'],
+                            :args => shell_provisioner_args(provisioner_detail['arguments']),
+                            privileged: provisioner_detail['privileged']
+                    else
+                        config.vm.provision provisioner_name, 
+                            type:"shell", 
+                            path: provisioner_detail['path'],
+                            privileged: provisioner_detail['privileged']
+                    end
+                elsif provisioner_detail['type'] == 'file'
+                    config.vm.provision provisioner_name,
+                    type: "file",
+                    source: provisioner_detail['source'],
+                    destination: provisioner_detail['destination']
+                end
+            end
+        end
+    end
+end
+
+###############################################################################
+# Configure Vagrant
+###############################################################################
+Vagrant.configure(all_config['api_version']) do |config|
+    # Virtual machine configuration
+    vm_config = all_config['vm']
+    # SSH config
+    ssh_config = vm_config['ssh']
+    # Network config
+    network_config = vm_config['network']
+    # Provision config
+    provision_config = all_config['provisioners']
+    
+    # Setup base config
+    setup_basic_config(config, vm_config)
+    
+    # Setup virtual box provider
+    setup_provider(config, vm_config)
+
+    # Setup networking
+    setup_network_forwarded_port(config, network_config['ports'])
+
+    # Setup ssh
+    # ToDo Write setup_ssh configuration function
+    # setup_ssh(config, ssh_config)
+
+    # Setup provisioning
+    setup_provisioners(config, provision_config)
+end

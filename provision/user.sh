@@ -1,18 +1,45 @@
 #!/bin/sh
 set -ex
 
-USER_NAME=$1
-USER_UID=$2
-USER_GID=$3
+for ARGUMENT in "$@"
+do
+    KEY=$(echo $ARGUMENT | cut -f1 -d=)
+    VALUE=$(echo $ARGUMENT | cut -f2 -d=)
 
-# Create a non-root user to use
-groupadd --gid $USER_GID $USER_NAME 
-useradd -s /bin/bash --uid $USER_UID --gid $USER_GID -m $USER_NAME
+    case "$KEY" in
+        user)
+            # Setup user variable
+            USER_NAME=$VALUE
+            ;;
+        uid)
+            # Setup user id variable
+            USER_UID=$VALUE
+            ;;
+        gid)
+            # Setup group id variable
+            USER_GID=$VALUE
+            ;;
+        *)
+            echo "Invalid argument ${KEY}"
+            ;;
+    esac
+done
 
-# [Optional] Add sudo support for non-root user
-apt-get install -y sudo
-echo $USER_NAME ALL=\(root\) NOPASSWD:ALL > /etc/sudoers.d/$USER_NAME
-chmod 0440 /etc/sudoers.d/$USER_NAME
+if [ ! $(getent passwd $USER_NAME) ] ; then
+    # Create a non-root user to use
+    groupadd --gid $USER_GID $USER_NAME 
+    useradd -s /bin/bash --uid $USER_UID --gid $USER_GID -m $USER_NAME
+    
+    # [Optional] Add sudo support for non-root user
+    apt-get install -y sudo
+    echo $USER_NAME ALL=\(root\) NOPASSWD:ALL > /etc/sudoers.d/$USER_NAME
+    chmod 0440 /etc/sudoers.d/$USER_NAME
 
-# Add user to the docker group
-usermod -aG docker $USER_NAME
+    # Create docker group if not exist
+    if [ ! $(getent group docker) ]; then
+        groupadd docker
+    fi
+    
+    # Add user to the docker group
+    usermod -aG docker $USER_NAME
+fi
