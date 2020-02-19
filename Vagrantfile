@@ -47,6 +47,10 @@ def setup_basic_config(config, vm_config)
     # [Optional] Set disk size
     # Note: vagrant plugin install vagrant-disksize
     config.disksize.size = vm_config['disk_size']
+
+    if Vagrant.has_plugin?("vagrant-vbguest")
+        config.vbguest.auto_update = false  
+    end
 end
 
 # Setup provider
@@ -78,6 +82,13 @@ def setup_network_forwarded_port(config, ports)
     end
 end
 
+# Setup ssh
+def setup_ssh(config, ssh_config)
+    config.ssh.insert_key = false
+    config.ssh.private_key_path = [ssh_config['key']['private-key'], "~/.vagrant.d/insecure_private_key"]
+    config.vm.provision "file", source: ssh_config['key']['public-key'], destination: "~/.ssh/authorized_keys"
+end
+
 # Setup provision
 def setup_provisioners(config, provisioners)
     provisioners && provisioners.each do |provisioner|
@@ -101,6 +112,11 @@ def setup_provisioners(config, provisioners)
                     type: "file",
                     source: provisioner_detail['source'],
                     destination: provisioner_detail['destination']
+                elsif provisioner_detail['type'] == 'synced_folder'
+                    config.vm.synced_folder provisioner_detail['source'],
+                        provisioner_detail['destination'],
+                        create: true,
+                        disabled: provisioner_detail['disabled']
                 end
             end
         end
@@ -131,7 +147,7 @@ Vagrant.configure(all_config['api_version']) do |config|
 
     # Setup ssh
     # ToDo Write setup_ssh configuration function
-    # setup_ssh(config, ssh_config)
+    setup_ssh(config, ssh_config)
 
     # Setup provisioning
     setup_provisioners(config, provision_config)
