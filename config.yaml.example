@@ -3,7 +3,7 @@ vm:
   base_box: 'ubuntu/bionic64'
   base_box_version: '20200206.0.0'
   name: 'nvUbuntuDev01'
-  cpus: 2
+  cpus: 1
   memory: 4096
   disk_size: '40GB'
   providers:
@@ -17,6 +17,9 @@ vm:
         guest: 3000
   # TODO: ssh not implemented yet.
   ssh:
+    key:
+      private-key: ~/.ssh/id_rsa
+      public-key: ~/.ssh/id_rsa.pub
     user:
       username: developer
       uid: 9090
@@ -84,6 +87,12 @@ provisioners:
       arguments:
         # Your git repositories
         - value: git@github.com:sajalshres/cornerstone.git
+  - sync-folder:
+      enable: false
+      type: synced_folder
+      source: c:/src
+      destination: ~/src
+      disabled: false
   - clean-up:
       enable: true
       after: :all
