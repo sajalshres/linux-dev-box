@@ -13,6 +13,7 @@ This repository includes the vagrant configuration that reads all your VM config
 git clone git@github.com:sajalshres/linux-dev-box.git
 cd linux-dev-box
 ```
+* Create `config.yaml` from [config.yaml.example](./config.yaml.example) as per the requirements.
 * Create and Configure guest machine
 ```bash
 vagrant up
