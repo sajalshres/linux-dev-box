@@ -1,4 +1,5 @@
 # vscode
+.vscode/
 *.code-workspace
 
 # log files
