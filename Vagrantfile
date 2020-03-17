@@ -89,6 +89,14 @@ def setup_ssh(config, ssh_config)
     config.vm.provision "file", source: ssh_config['key']['public-key'], destination: "~/.ssh/authorized_keys"
 end
 
+# Setup sync folder
+def setup_sync_folder(config, sync_folder_config)
+    config.vm.synced_folder sync_folder_config['source'],
+        sync_folder_config['destination'],
+        create: true,
+        disabled: sync_folder_config['disabled'] 
+end
+
 # Setup provision
 def setup_provisioners(config, provisioners)
     provisioners && provisioners.each do |provisioner|
@@ -112,11 +120,6 @@ def setup_provisioners(config, provisioners)
                     type: "file",
                     source: provisioner_detail['source'],
                     destination: provisioner_detail['destination']
-                elsif provisioner_detail['type'] == 'synced_folder'
-                    config.vm.synced_folder provisioner_detail['source'],
-                        provisioner_detail['destination'],
-                        create: true,
-                        disabled: provisioner_detail['disabled']
                 end
             end
         end
@@ -133,6 +136,8 @@ Vagrant.configure(all_config['api_version']) do |config|
     ssh_config = vm_config['ssh']
     # Network config
     network_config = vm_config['network']
+    # Sync folder config
+    sync_folder_config = vm_config['sync-folder']
     # Provision config
     provision_config = all_config['provisioners']
     
@@ -148,6 +153,9 @@ Vagrant.configure(all_config['api_version']) do |config|
     # Setup ssh
     # ToDo Write setup_ssh configuration function
     setup_ssh(config, ssh_config)
+
+    # Setup sync folder
+    setup_sync_folder(config, sync_folder_config)
 
     # Setup provisioning
     setup_provisioners(config, provision_config)
