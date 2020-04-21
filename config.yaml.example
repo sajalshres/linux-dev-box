@@ -24,6 +24,11 @@ vm:
       username: developer
       uid: 9090
       gid: 9090
+  sync-folder:
+    enable: false
+    type: synced_folder
+    source: d:/repository
+    destination: /home/vagrant/repository
 provisioners:
   - base:
       enable: true
@@ -87,12 +92,6 @@ provisioners:
       arguments:
         # Your git repositories
         - value: git@github.com:sajalshres/cornerstone.git
-  - sync-folder:
-      enable: false
-      type: synced_folder
-      source: c:/src
-      destination: ~/src
-      disabled: false
   - clean-up:
       enable: true
       after: :all
