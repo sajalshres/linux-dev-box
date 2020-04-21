@@ -91,10 +91,12 @@ end
 
 # Setup sync folder
 def setup_sync_folder(config, sync_folder_config)
-    config.vm.synced_folder sync_folder_config['source'],
-        sync_folder_config['destination'],
-        create: true,
-        disabled: sync_folder_config['disabled'] 
+    if sync_folder_config['enable']
+        config.vm.synced_folder sync_folder_config['source'],
+            sync_folder_config['destination'],
+            create: true,
+            disabled: sync_folder_config['disabled']
+    end
 end
 
 # Setup provision
