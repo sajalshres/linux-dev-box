@@ -1,9 +1,9 @@
 api_version: 2
 vm:
   base_box: 'ubuntu/bionic64'
-  base_box_version: '20200206.0.0'
+  base_box_version: '20200507.0.0'
   name: 'nvUbuntuDev01'
-  cpus: 1
+  cpus: 2
   memory: 4096
   disk_size: '40GB'
   providers:
@@ -70,7 +70,7 @@ provisioners:
         - value: uid=9090
         - value: gid=9090
   - git:
-      enable: true
+      enable: false
       type: shell
       path: provision/git.sh
       privileged: false
@@ -85,7 +85,7 @@ provisioners:
         # Get your token: https://github.com/settings/tokens
         - value: token=YOUR-TOKEN-ID
   - repositories:
-      enable: true
+      enable: false
       type: shell
       path: provision/repositories.sh
       privileged: false

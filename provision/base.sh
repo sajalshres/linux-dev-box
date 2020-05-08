@@ -22,4 +22,4 @@ apt-get -y install vim
 apt-get -y install firefox
 # Install chrome
 wget https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb -P /tmp
-apt install /tmp/google-chrome-stable_current_amd64.deb
+apt install -y /tmp/google-chrome-stable_current_amd64.deb
