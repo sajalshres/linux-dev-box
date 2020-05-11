@@ -14,6 +14,15 @@ git clone git@github.com:sajalshres/linux-dev-box.git
 cd linux-dev-box
 ```
 * Create `config.yaml` from [config.yaml.example](./config.yaml.example) as per the requirements.
+* Install vagrant plugins
+
+```bash
+# Plugin disk size
+vagrant plugin install vagrant-disksize
+# Plugin virtual box guest add-on
+vagrant plugin install vagrant-vbguest
+```
+
 * Create and Configure guest machine
 ```bash
 vagrant up
