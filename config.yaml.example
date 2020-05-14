@@ -15,7 +15,6 @@ vm:
         guest: 8000
       - host: 3000
         guest: 3000
-  # TODO: ssh not implemented yet.
   ssh:
     key:
       private-key: ~/.ssh/id_rsa

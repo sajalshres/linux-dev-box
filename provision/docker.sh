@@ -17,3 +17,6 @@ curl -L "https://github.com/docker/compose/releases/download/1.25.3/docker-compo
     -o /usr/local/bin/docker-compose -s
 # Apply executable permissions to the binary
 chmod +x /usr/local/bin/docker-compose
+
+# Add default vagrnat user to the docker group
+usermod -aG docker vagrant
