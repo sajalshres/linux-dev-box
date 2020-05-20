@@ -46,6 +46,69 @@ vagrant up --provision
 vagrant provision
 ```
 
+## GUI
+
+To launch in dev box in GUI:
+
+* Launch Virtulbox, it will list your machine running.
+* Click `show` icon
+* Login with `vagrant` user. **Note**: pass is same.
+* On first boot, Desktop will ask for configuration, choose default.
+
+## SSH to Box
+
+```
+$ ssh vagrant@localhost -p 2222
+```
+
+## VSCode Remote Development
+
+* Launch vscode
+* Install `Remote Development` pack or just `Remote - SSH`
+* Open command palette by clicking view -> `Command Palette...` or `ctrl` + `shift` + `p`
+* Type and select: `Remote-SSH: Open Configuration File`
+* Select the default or user configuration file
+* And content as below:
+
+```
+Host You-Machine-Name
+    HostName localhost
+    User vagrant
+    Port 2222
+```
+
+* Open command palette by clicking view -> `Command Palette...` or `ctrl` + `shift` + `p`
+* Type and select: `Remote-SSH: Connect to host`
+
+## Verification
+
+* Launch a terminal
+* Verify evrything is installed as below:
+
+```shell
+$ node -v
+v13.14.0
+
+$ npm -v
+6.14.4
+
+$ docker --version
+
+Docker version 19.03.8, build afacb8b7f0
+
+$ docker-compose --version
+docker-compose version 1.25.3, build d4d1b42b
+
+$ python3.7 --version
+Python 3.7.7
+
+ls ~/Git/
+
+# If git was enabled in config file
+$ ssh -T git@github.com
+Hi sajalshres! You've successfully authenticated, but GitHub does not provide shell access.
+```
+
 ## Note:
 > This project is still a Work-In-Progress(WIP)
 > We are currently building a script to install all the prerequisites in a single `powershell` or `python` script
