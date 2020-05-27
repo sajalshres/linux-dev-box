@@ -17,8 +17,10 @@ vm:
         guest: 3000
   ssh:
     key:
-      private-key: ~/.ssh/id_rsa
-      public-key: ~/.ssh/id_rsa.pub
+      # Generate ssh key: ssh-keygen -t rsa -b 4096 -C "your_email@example.com"
+      # And place the private and public full path below
+      private-key: c:/users/sajalshres/.ssh/id_rsa
+      public-key: c:/users/sajalshres/.ssh/id_rsa.pub
     user:
       username: developer
       uid: 9090
@@ -26,8 +28,8 @@ vm:
   sync-folder:
     enable: false
     type: synced_folder
-    source: d:/repository
-    destination: /home/vagrant/repository
+    source: d:/example
+    destination: /home/vagrant/example
 provisioners:
   - base:
       enable: true
@@ -90,7 +92,7 @@ provisioners:
       privileged: false
       arguments:
         # Your git repositories
-        - value: git@github.com:sajalshres/cornerstone.git
+        - value: git@github.com:sajalshres/linux-dev-box.git
   - clean-up:
       enable: true
       after: :all

@@ -85,7 +85,7 @@ end
 # Setup ssh
 def setup_ssh(config, ssh_config)
     config.ssh.insert_key = false
-    config.ssh.private_key_path = [ssh_config['key']['private-key'], "~/.vagrant.d/insecure_private_key"]
+    config.ssh.private_key_path = [ssh_config['key']['private-key'], "#{Dir.home}/.vagrant.d/insecure_private_key"]
     config.vm.provision "file", source: ssh_config['key']['public-key'], destination: "~/.ssh/authorized_keys"
 end
 

@@ -11,10 +11,11 @@ This repository includes the vagrant configuration that reads all your VM config
 * Install vagrant plugins
 
 ```bash
+# Launch terminal and install vagrant plugin as below
 # Plugin disk size
-vagrant plugin install vagrant-disksize
+$ vagrant plugin install vagrant-disksize
 # Plugin virtual box guest add-on
-vagrant plugin install vagrant-vbguest
+$ vagrant plugin install vagrant-vbguest
 ```
 
 * Clone or download this project
