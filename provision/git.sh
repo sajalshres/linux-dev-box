@@ -49,7 +49,7 @@ function github-authenticated() {
 
 function generate-ssh-keys() {
     # Generate the ssh key
-    ssh-keygen -t rsa -b 4096 -N '' -C 'sajal.shres@gmail.com' -f ~/.ssh/id_rsa <<< y
+    ssh-keygen -t rsa -b 4096 -N '' -C "$EMAIL" -f ~/.ssh/id_rsa <<< y
 
     # Add the ssh key to ssh-agent
     # ssh-add ~/.ssh/id_rsa
@@ -70,7 +70,6 @@ if [ ! -f "${PRIVATE_KEY_FILE}" ] && [ ! -f "${PUBLIC_KEY_FILE}" ]; then
 else
     # SSH Key pair exists
     # Check if the key works
-    echo "Inside Else"
     if ! github-authenticated; then
         # Existing key is not working, generate again.
         generate-ssh-keys

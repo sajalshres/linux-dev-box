@@ -36,7 +36,10 @@ end
 def setup_basic_config(config, vm_config)
     # Vargrant Box
     config.vm.box = vm_config['base_box']
-    config.vm.box_version = vm_config['base_box_version']
+    
+    if vm_config['base_box_version'] != 'latest'
+        config.vm.box_version = vm_config['base_box_version']
+    end
         
     # Vagrant box name
     config.vm.define vm_config['name']
