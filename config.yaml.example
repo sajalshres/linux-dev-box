@@ -1,101 +1,58 @@
 api_version: 2
 vm:
-  base_box: 'ubuntu/bionic64'
-  base_box_version: '20200507.0.0' # Use latest to use latest version
-  name: 'nvUbuntuDev01'
-  cpus: 2
-  memory: 4096
-  disk_size: '40GB'
+  base_box: 'sajalshres/ubuntu-dev-box'
+  base_box_version: '1.0.0' # Use latest to use latest version
+  name: 'ubuntubox'
+  cpus: 1
+  memory: 1024
+  disk_size: '12GB'
   providers:
     virtualbox:
-      gui: false
+      gui: true
   network:
     ports:
-      - host: 8000
-        guest: 8000
-      - host: 3000
-        guest: 3000
+      - host: 9999
+        guest: 9999
   ssh:
     key:
       # Generate ssh key: ssh-keygen -t rsa -b 4096 -C "your_email@example.com"
       # And place the private and public full path below
-      private-key: c:/users/sajalshres/.ssh/id_rsa
-      public-key: c:/users/sajalshres/.ssh/id_rsa.pub
-    user:
-      username: developer
-      uid: 9090
-      gid: 9090
+      private-key: c:/users/<your-username>/.ssh/id_rsa
+      public-key: c:/users/<your-username>/.ssh/id_rsa.pub
+      # Set copy to true if you want to copy the local keys to box
+      # Otherwise, provision will generate new keys
+      copy: true
   sync-folder:
     enable: false
     type: synced_folder
-    source: d:/example
-    destination: /home/vagrant/example
+    source: d:/
+    destination: /d
 provisioners:
-  - base:
-      enable: true
-      before: :all
-      type: shell
-      path: provision/base.sh
-      privileged: true
-  - python:
-      enable: true
-      type: shell
-      path: provision/python.sh
-      privileged: true
-  - docker:
-      enable: true
-      type: shell
-      path: provision/docker.sh
-      privileged: true
-  # TODO: Check for following npm error:
-  ## Command: npm install -g eslint
-  ## Error: 429 Too Many Requests - GET https://registry.npmjs.org/strip-ansi
-  - web-development:
-      enable: true
-      type: shell
-      path: provision/web-development.sh
-      privileged: true
-  - desktop:
-      enable: true
-      type: shell
-      path: provision/desktop.sh
-      privileged: true
-  # TODO: Not proud of this implementation, change later.
-  - user:
-      enable: true
-      type: shell
-      path: provision/user.sh
-      privileged: true
-      arguments:
-        - value: user=developer
-        - value: uid=9090
-        - value: gid=9090
   - git:
-      enable: false
+      # This step will check if ssh keys exists from previous step,
+      # It will generate new keys and add it to github
+      # Make sure the key title doesnot exist in github
+      enable: enable
       type: shell
       path: provision/git.sh
       privileged: false
       arguments:
         # Github user name
-        - value: username=YOUR-GIT-USERNAME
+        - value: username=<your-username>
         # Github email
-        - value: email=YOUR-GIT-EMAIL
+        - value: email=<your-email@example.com>
         # Personal access api token
         # Personal access token can be used in place of password
         # More info: https://help.github.com/en/github/authenticating-to-github/creating-a-personal-access-token-for-the-command-line
         # Get your token: https://github.com/settings/tokens
-        - value: token=YOUR-TOKEN-ID
+        - value: token=<your-token>
+        # Key title must be unique, and should not exist already in github keys
+        - value: title=<your-ssh-key-title>
   - repositories:
-      enable: false
+      enable: enable
       type: shell
       path: provision/repositories.sh
       privileged: false
       arguments:
         # Your git repositories
         - value: git@github.com:sajalshres/linux-dev-box.git
-  - clean-up:
-      enable: true
-      after: :all
-      type: shell
-      path: provision/clean-up.sh
-      privileged: true

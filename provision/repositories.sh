@@ -1,5 +1,5 @@
 #!/bin/bash
-set -ex
+set +ex
 
 LOCATION="${HOME}/Git"
 REPOSITORIES=("$@")
@@ -15,7 +15,7 @@ function github-authenticated() {
     # user is not authenticated
     return 1
   else
-    echo "unknown exit code in attempt to ssh into git@github.com"
+    echo "REPOSITORY: unknown exit code in attempt to ssh into git@github.com"
   fi
   return 2
 }
@@ -28,16 +28,21 @@ if [ ! -d $LOCATION ]; then
 fi
 
 # check if git is authenticated.
+echo "REPOSITORY: Checking GitHub access..."
 if github-authenticated; then
+    echo "REPOSITORY: GitHub access successful"
     for repository in "${REPOSITORIES[@]}"
     do
+        echo "REPOSITORY: Cloning $repository"
         repo_name=`basename "${repository%.*}"`
         repo_location="${LOCATION}/${repo_name}"
         if [ ! -d $repo_location ]; then
           cd $LOCATION
           git clone $repository
         else
-          echo "Repo ${repo_name} already exist's in ${LOCATION}"
+          echo "REPOSITORY: Repo ${repo_name} already exist's in ${LOCATION}, skipping..."
         fi
     done
+else
+ echo "REPOSITORY: Couldn't authenticate with Github, Please check your keys manually."
 fi

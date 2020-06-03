@@ -87,9 +87,36 @@ end
 
 # Setup ssh
 def setup_ssh(config, ssh_config)
-    config.ssh.insert_key = false
-    config.ssh.private_key_path = [ssh_config['key']['private-key'], "#{Dir.home}/.vagrant.d/insecure_private_key"]
-    config.vm.provision "file", source: ssh_config['key']['public-key'], destination: "~/.ssh/authorized_keys"
+    #config.ssh.insert_key = false
+    #config.ssh.private_key_path = [
+    #    "#{Dir.home}/.vagrant.d/insecure_private_key"
+    #]
+    config.vm.provision :shell, privileged: false do |provisioner|
+        ssh_private_key = File.read(ssh_config['key']['private-key'])
+        ssh_pub_key = File.readlines(ssh_config['key']['public-key']).first.strip
+        provisioner.inline = <<-SHELL
+            if grep -sq "#{ssh_pub_key}" /home/$USER/.ssh/authorized_keys; then
+                echo "SSH: keys already provisioned."
+            else
+                echo "SSH: starting key provisioning"
+                mkdir -p /home/$USER/.ssh/
+                touch /home/$USER/.ssh/known_hosts
+                touch /home/$USER/.ssh/authorized_keys
+                echo #{ssh_pub_key} >> /home/$USER/.ssh/authorized_keys
+                sudo bash -c "echo #{ssh_pub_key} >> /root/.ssh/authorized_keys"
+            fi
+
+            if [ #{ssh_config['key']['copy']} == "true" ]; then
+                echo "SSH: copy is set to true, copying key"
+                echo "#{ssh_private_key}" > /home/$USER/.ssh/id_rsa
+                echo #{ssh_pub_key} > /home/$USER/.ssh/id_rsa.pub
+                chmod 600 /home/$USER/.ssh/id_rsa
+                chmod 644 /home/$USER/.ssh/id_rsa.pub
+            fi
+            chown -R $USER:$USER /home/$USER
+            exit 0
+        SHELL
+    end
 end
 
 # Setup sync folder
