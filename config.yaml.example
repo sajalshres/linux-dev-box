@@ -1,7 +1,7 @@
 api_version: 2
 vm:
   base_box: 'sajalshres/ubuntu-dev-box'
-  base_box_version: '1.0.0' # Use latest to use latest version
+  base_box_version: '1.0.1' # Use latest to use latest version
   name: 'ubuntubox'
   cpus: 1
   memory: 1024
