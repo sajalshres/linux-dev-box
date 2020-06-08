@@ -75,6 +75,8 @@ def setup_provider(config, vm_config)
         # Additional customizations
         # Shared clipboard
         vb.customize ['modifyvm', :id, '--clipboard', 'bidirectional']
+        # Disable serial port
+        vb.customize [ "modifyvm", :id, "--uartmode1", "disconnected" ]
     end
 end
 
