@@ -46,6 +46,10 @@ vagrant up --provision
 # OR
 vagrant provision
 ```
+**KNOWN ISSUES**
+If the command line gets stuck in  "ssh auth method: private key" or get  "time out while waiting for the machine to boot",
+try reducing the number of cpus to 1 under vm in your config.yaml file.
+
 
 ## GUI
 
