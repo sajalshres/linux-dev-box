@@ -38,6 +38,8 @@ cd linux-dev-box
 # Same directory where repository is cloned
 vagrant up
 ```
+
+
 **Note**: If you get error for ubuntu cloud image, update the **base_box_version** from [https://app.vagrantup.com/ubuntu/boxes/bionic64](https://app.vagrantup.com/ubuntu/boxes/bionic64)
 * To re-run softwares, run provision as below.
 ```bash
@@ -46,7 +48,12 @@ vagrant up --provision
 # OR
 vagrant provision
 ```
+## KNOWN ISSUES
 
+Command Line stuck on ssh authentication
+: If the command line is getting stuck showing "**ssh auth method:private key**", decrease the number of cpus allocated in `config.yml` to one.
+ 
+ 
 ## GUI
 
 To launch in dev box in GUI:
