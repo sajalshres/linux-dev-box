@@ -3,9 +3,10 @@ vm:
   base_box: 'sajalshres/ubuntu-dev-box'
   base_box_version: '20201010.0.0' # Use latest to use latest version
   name: 'ubuntubox'
-  cpus: 1
-  memory: 1024
-  disk_size: '12GB'
+  cpus: 2
+  memory: 4096
+  disk_size: '60GB'
+  boot_timeout: 500
   providers:
     virtualbox:
       gui: true
@@ -21,7 +22,7 @@ vm:
       public-key: c:/users/<your-username>/.ssh/id_rsa.pub
       # Set copy to true if you want to copy the local keys to box
       # Otherwise, provision will generate new keys
-      copy: true
+      copy: false
   sync-folder:
     enable: false
     type: synced_folder

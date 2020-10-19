@@ -40,12 +40,16 @@ def setup_basic_config(config, vm_config)
     if vm_config['base_box_version'] != 'latest'
         config.vm.box_version = vm_config['base_box_version']
     end
+
         
     # Vagrant box name
     config.vm.define vm_config['name']
 
     # Setup virtual machine name
     config.vm.host_name = vm_config['name']
+
+    # Set timeout
+    config.vm.boot_timeout = vm_config['boot_timeout']
 
     # [Optional] Set disk size
     # Note: vagrant plugin install vagrant-disksize
