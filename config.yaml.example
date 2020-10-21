@@ -6,7 +6,7 @@ vm:
   cpus: 2
   memory: 4096
   disk_size: '60GB'
-  boot_timeout: 500
+  boot_timeout: 1800
   providers:
     virtualbox:
       gui: true
