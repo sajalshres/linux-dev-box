@@ -13,6 +13,7 @@ jobs:
         uses: riznob/packer-build-action@v1.1
         with:
           templateFile: 'config.json'
+          varFile: 'variables.json'
           workingDir: './base_box'
         env:
           VAGRANT_ACCESS_TOKEN: ${{ secrets.VAGRANT_ACCESS_TOKEN }}
