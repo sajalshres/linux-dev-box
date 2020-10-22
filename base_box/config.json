@@ -1,4 +1,7 @@
 {
+    "variables": {
+        "vagrant_access_token": "{{ env `VAGRANT_ACCESS_TOKEN` }}"
+    },
     "provisioners": [
         {
             "execute_command": "echo 'vagrant' | {{.Vars}} sudo -S -E sh -eux '{{.Path}}'",
@@ -22,7 +25,7 @@
             "type": "vagrant-cloud",
             "box_tag": "sajalshres/ubuntu-dev-box",
             "keep_input_artifact": true,
-            "access_token": "{{env `VAGRANT_ACCESS_TOKEN`}}",
+            "access_token": "{{user `vagrant_access_token`}}",
             "version": "{{isotime \"2006.01.02.0.0\"}}"
         }
     ]
