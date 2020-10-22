@@ -1,0 +1,34 @@
+{
+    "variables": {
+        "version": "",
+        "vagrant_access_token": ""
+    },
+    "provisioners": [
+        {
+            "execute_command": "echo 'vagrant' | {{.Vars}} sudo -S -E sh -eux '{{.Path}}'",
+            "scripts": [
+                "scripts/provision.sh"
+            ],
+            "type": "shell"
+        }
+    ],
+    "builders": [
+        {
+            "communicator": "ssh",
+            "source_path": "ubuntu/bionic64",
+            "box_version": "20201007.0.0",
+            "add_force": true,
+            "provider": "virtualbox",
+            "type": "vagrant"
+        }
+    ],
+    "post-processors": [
+        {
+            "type": "vagrant-cloud",
+            "box_tag": "sajalshres/ubuntu-dev-box",
+            "keep_input_artifact": true,
+            "access_token": "{{user `vagrant_access_token`}}",
+            "version": "{{user `version`}}"
+        }
+    ]
+}

@@ -8,3 +8,6 @@
 # vagrant
 .vagrant/
 config.yaml
+
+# packer
+output-vagrant/

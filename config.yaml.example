@@ -38,14 +38,14 @@ provisioners:
       path: provision/git.sh
       privileged: false
       arguments:
-        # Github user name
+        # Git user name
         - value: username=<your-username>
-        # Github email
+        # Git email
         - value: email=<your-email@example.com>
         # Personal access api token
         # Personal access token can be used in place of password
         # More info: https://help.github.com/en/github/authenticating-to-github/creating-a-personal-access-token-for-the-command-line
-        # Get your token: https://github.com/settings/tokens
+        # Get your token: https://github.com/settings/tokens or on-prem git server
         - value: token=<your-token>
         # Key title must be unique, and should not exist already in github keys
         - value: title=<your-ssh-key-title>
