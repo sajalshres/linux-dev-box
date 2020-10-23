@@ -1,6 +1,8 @@
 # Linux Dev Box
 This repository includes the vagrant configuration that reads all your VM configuration from the configuration file `config.yml` and builds and manage the development machine in a single workflow.
 
+This development environment is supposed to be **immutable**, meaning once you create it, you never change it. For a new version you destroy the older one.
+
 ## Requirements [as tested]
 * [VirtualBox 6.0.16](https://download.virtualbox.org/virtualbox/6.0.16/VirtualBox-6.0.16-135674-Win.exe)
 * [Vagrant 2.2.10](https://releases.hashicorp.com/vagrant/2.2.10/vagrant_2.2.10_x86_64.msi)
@@ -113,6 +115,12 @@ Hi sajalshres! You've successfully authenticated, but GitHub does not provide sh
 ## Note:
 > This project is still a Work-In-Progress(WIP)
 > We are currently building a script to install all the prerequisites in a single `powershell` or `python` script
+
+## Known Issues
+
+- Vagrant not working with latest version on VirtualBox, revert back to version mentioned in **Requirement**
+
+- Virutal Box incompatible with Windows Hypervisor. Disable the windows hypervisor platform.
 
 ## Contributers
 1. Sajal Shrestha
