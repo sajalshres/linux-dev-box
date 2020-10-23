@@ -1,8 +1,8 @@
 api_version: 2
 vm:
   base_box: 'sajalshres/ubuntu-dev-box'
-  base_box_version: '20201010.0.0' # Use latest to use latest version
-  name: 'ubuntubox'
+  base_box_version: '2020.10.22.9.9' # Use latest to use latest version
+  name: 'ubuntu_box'
   cpus: 2
   memory: 4096
   disk_size: '60GB'
@@ -30,6 +30,7 @@ vm:
     destination: /d
 provisioners:
   - git:
+      # TODO: add bitbucket support
       # This step will check if ssh keys exists from previous step,
       # It will generate new keys and add it to github
       # Make sure the key title doesnot exist in github

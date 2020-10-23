@@ -1,9 +1,9 @@
 # Linux Dev Box
 This repository includes the vagrant configuration that reads all your VM configuration from the configuration file `config.yml` and builds and manage the development machine in a single workflow.
 
-## Requirements
-* [VirtualBox](https://www.virtualbox.org/wiki/Downloads)
-* [Vagrant](https://releases.hashicorp.com/vagrant/2.2.7/vagrant_2.2.7_x86_64.msi)
+## Requirements [as tested]
+* [VirtualBox 6.0.16](https://download.virtualbox.org/virtualbox/6.0.16/VirtualBox-6.0.16-135674-Win.exe)
+* [Vagrant 2.2.10](https://releases.hashicorp.com/vagrant/2.2.10/vagrant_2.2.10_x86_64.msi)
 * [OpenSSH](https://github.com/PowerShell/Win32-OpenSSH/releases)
 
 ## Setup

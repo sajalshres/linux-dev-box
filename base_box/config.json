@@ -1,6 +1,6 @@
 {
     "variables": {
-        "vagrant_access_token": "{{ env `VAGRANT_ACCESS_TOKEN` }}"
+        "vagrant_access_token": ""
     },
     "provisioners": [
         {
