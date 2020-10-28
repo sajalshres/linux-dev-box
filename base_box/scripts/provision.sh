@@ -32,6 +32,10 @@ apt-get -y install --no-install-recommends apt-transport-https ca-certificates c
 # Install networking toolkit: ifconfig, netstat, telnet etc.
 apt-get -y install net-tools xinetd telnetd
 #
+# Install audio
+apt install -y pulseaudio
+systemctl --user enable pulseaudio
+#
 # Install vim
 apt-get -y install vim
 #
@@ -86,6 +90,13 @@ wget http://security.debian.org/debian-security/pool/updates/main/o/openssl/libs
 apt install -y /tmp/libssl1.0.0_1.0.1t-1+deb8u12_amd64.deb
 wget https://download.cdn.viber.com/cdn/desktop/Linux/viber.deb -P /tmp
 apt install -y /tmp/viber.deb
+#
+# Increase amount of inotify watches
+echo '' >> /etc/sysctl.conf
+echo '# Inotify watches for larger workspace' >> /etc/sysctl.conf
+echo 'fs.inotify.max_user_watches=524288' >> /etc/sysctl.conf
+echo '' >> /etc/sysctl.conf
+sysctl -p
 #
 # Install Desktop environment
 apt -y install kde-plasma-desktop

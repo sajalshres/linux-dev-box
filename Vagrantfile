@@ -56,7 +56,7 @@ def setup_basic_config(config, vm_config)
     config.disksize.size = vm_config['disk_size']
 
     if Vagrant.has_plugin?("vagrant-vbguest")
-        config.vbguest.auto_update = false  
+        config.vbguest.auto_update = false
     end
 end
 
@@ -119,7 +119,7 @@ def setup_ssh(config, ssh_config)
                 chmod 600 /home/$USER/.ssh/id_rsa
                 chmod 644 /home/$USER/.ssh/id_rsa.pub
             fi
-            chown -R $USER:$USER /home/$USER
+            chown -R $USER:$USER /home/$USER/.ssh
             exit 0
         SHELL
     end
