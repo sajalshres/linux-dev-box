@@ -11,3 +11,6 @@ config.yaml
 
 # packer
 output-vagrant/
+
+# custom provisioner
+provision/custom.sh

@@ -101,3 +101,9 @@ else
     echo "GIT: Some problem in SSH key pair generation, please check logs"
     exit 1
 fi
+
+# Git Config
+echo "GIT: Setting config username ${USER_NAME}"
+git config --global user.name "${USER_NAME}"
+echo "GIT: Setting config email ${EMAIL}"
+git config --global user.email "${EMAIL}"

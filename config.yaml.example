@@ -12,8 +12,12 @@ vm:
       gui: true
   network:
     ports:
-      - host: 9999
-        guest: 9999
+      # Django Primary
+      - host: 8000
+        guest: 8000
+      # DB
+      - host: 5432
+        guest: 5432
   ssh:
     key:
       # Generate ssh key: ssh-keygen -t rsa -b 4096 -C "your_email@example.com"
@@ -58,3 +62,8 @@ provisioners:
       arguments:
         # Your git repositories
         - value: git@github.com:sajalshres/linux-dev-box.git
+  - custom:
+      enable: false
+      type: shell
+      path: provision/custom.sh
+      privileged: false
