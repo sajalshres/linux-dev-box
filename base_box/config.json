@@ -1,6 +1,10 @@
 {
     "variables": {
-        "vagrant_access_token": ""
+        "vagrant_access_token": "",
+        "node_version": "15",
+        "python_version": "3.7",
+        "docker_compose_version": "1.28.5",
+        "nvm_version": "0.37.2"
     },
     "provisioners": [
         {
@@ -8,7 +12,13 @@
             "scripts": [
                 "scripts/provision.sh"
             ],
-            "type": "shell"
+            "type": "shell",
+            "environment_vars": [
+                "NODE_VERSION={{user `node_version`}}",
+                "PYTHON_VERSION={{user `python_version`}}",
+                "DOCKER_COMPOSE_VERSION={{user `docker_compose_version`}}",
+                "NVM_VERSION={{user `nvm_version`}}"
+            ]
         }
     ],
     "builders": [

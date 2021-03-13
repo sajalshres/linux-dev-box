@@ -21,7 +21,7 @@ add-apt-repository -y \
 add-apt-repository -y ppa:deadsnakes/ppa
 #
 # Add NodeJS repository
-curl -sL https://deb.nodesource.com/setup_14.x | bash -
+curl -sL "https://deb.nodesource.com/setup_${NODE_VERSION}.x" | bash -
 #
 # Update package index after adding repositories
 apt-get update
@@ -50,21 +50,21 @@ apt install -y /tmp/google-chrome-stable_current_amd64.deb
 apt-get -y install docker-ce docker-ce-cli containerd.io
 #
 # Install docker-compose
-curl -L "https://github.com/docker/compose/releases/download/1.27.4/docker-compose-$(uname -s)-$(uname -m)" \
+curl -L "https://github.com/docker/compose/releases/download/${DOCKER_COMPOSE_VERSION}/docker-compose-$(uname -s)-$(uname -m)" \
     -o /usr/local/bin/docker-compose -s
 chmod +x /usr/local/bin/docker-compose
 usermod -aG docker vagrant
 #
 # Install python and pip
-apt-get -y install python3.7
+apt-get -y install "python${PYTHON_VERSION}"
 curl https://bootstrap.pypa.io/get-pip.py -o /tmp/get-pip.py -s
-python3.7 /tmp/get-pip.py
+eval "python${PYTHON_VERSION} /tmp/get-pip.py"
 rm -f /tmp/get-pip.py
-pip3.7 install virtualenv
+eval "pip${PYTHON_VERSION} install virtualenv"
 #
-# Update default python to 3.7
+# Update default python
 rm -f /usr/bin/python
-ln -s /usr/bin/python3.7 /usr/bin/python
+ln -s "/usr/bin/python${PYTHON_VERSION}" /usr/bin/python
 #
 # Install Node.js
 apt-get -y install nodejs
@@ -80,7 +80,7 @@ runuser -l vagrant -c "echo 'export PATH=~/.npm-global/bin:\$PATH' >> ~/.profile
 npm install -g eslint webpack webpack-cli
 #
 # Install nvm as default vagrant user
-runuser -l vagrant -c "curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.35.3/install.sh | bash"
+runuser -l vagrant -c "curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v${NVM_VERSION}/install.sh | bash"
 #
 # Install viber
 #If you try to install Viber on Debian 9 you will probably get the following error:
