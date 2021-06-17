@@ -33,14 +33,12 @@ vm:
     source: d:/
     destination: /d
 provisioners:
-  - git:
-      # TODO: add bitbucket support
-      # This step will check if ssh keys exists from previous step,
+  - github:
+      # This step will check if github can be authenticated,
       # It will generate new keys and add it to github
-      # Make sure the key title doesnot exist in github
       enable: enable
       type: shell
-      path: provision/git.sh
+      path: provision/github.sh
       privileged: false
       arguments:
         # Git user name
@@ -53,6 +51,20 @@ provisioners:
         # Get your token: https://github.com/settings/tokens or on-prem git server
         - value: token=<your-token>
         # Key title must be unique, and should not exist already in github keys
+        - value: title=<your-ssh-key-title>
+  - bitbucket:
+      # This step will check if bitbucket can be authenticated,
+      # It will generate new keys and add it to bitbucket server
+      enable: true
+      type: shell
+      path: provision/bitbucket.sh
+      privileged: false
+      arguments:
+        - value: host=<bitbucket-server-host>
+        - value: port=<bitbucket-server-port>
+        - value: username=<atlassian-username>
+        - value: password=<your-password>
+        - value: email=s<your-email@example.com>
         - value: title=<your-ssh-key-title>
   - repositories:
       enable: enable

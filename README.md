@@ -40,7 +40,7 @@ cd linux-dev-box
 # Same directory where repository is cloned
 vagrant up
 ```
-**Note**: If you get error for ubuntu cloud image, update the **base_box_version** from [https://app.vagrantup.com/ubuntu/boxes/bionic64](https://app.vagrantup.com/ubuntu/boxes/bionic64)
+**Note**: If you get error for ubuntu cloud image, update the **base_box_version** from [https://app.vagrantup.com/sajalshres/boxes/ubuntu-dev-box](https://app.vagrantup.com/sajalshres/boxes/ubuntu-dev-box)
 * To re-run softwares, run provision as below.
 ```bash
 # Same directory where repository is cloned
@@ -48,6 +48,32 @@ vagrant up --provision
 # OR
 vagrant provision
 ```
+
+## Update Box to latest version
+
+- Take backup of files inside vm, if any
+- Destory existing box:
+
+    ```bash
+    $ vagrant destroy
+    ```
+
+- Download latest version
+
+    ```bash
+    $ vagrant box update
+    ```
+
+- You may have to remove/delete the virtualbox vm folder similar to:
+
+    `C:\Users\<username>\VirtualBox VMs` # on windows or the path of the virtualbox vm.
+
+- Provision new vm:
+
+    ```bash
+    $ vagrant up --provision
+    ```
+
 
 ## GUI
 
@@ -90,17 +116,17 @@ Host You-Machine-Name
 
 ```shell
 $ node -v
-v13.14.0
+v16.3.0
 
 $ npm -v
 6.14.4
 
 $ docker --version
 
-Docker version 19.03.8, build afacb8b7f0
+Docker version 20.10.7, build f0df350
 
 $ docker-compose --version
-docker-compose version 1.25.3, build d4d1b42b
+docker-compose version 1.29.2, build 5becea4c
 
 $ python3.7 --version
 Python 3.7.7
@@ -110,6 +136,12 @@ ls ~/Git/
 # If git was enabled in config file
 $ ssh -T git@github.com
 Hi sajalshres! You've successfully authenticated, but GitHub does not provide shell access.
+
+# if bitbucket was enabled
+$ ssh -vT git@<bitbucketserver-address> -p <port>
+...
+debug1: Authentication succeeded (publickey).
+...
 ```
 
 ## Note:
@@ -119,8 +151,8 @@ Hi sajalshres! You've successfully authenticated, but GitHub does not provide sh
 ## Known Issues
 
 - Vagrant not working with latest version on VirtualBox, revert back to version mentioned in **Requirement**
-
 - Virutal Box incompatible with Windows Hypervisor. Disable the windows hypervisor platform.
+- Docker is not responding, uninstall docker and upgrade it or update vagrant box.
 
 ## Contributers
 1. Sajal Shrestha

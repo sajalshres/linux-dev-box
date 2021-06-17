@@ -32,9 +32,9 @@ apt-get -y install --no-install-recommends apt-transport-https ca-certificates c
 # Install networking toolkit: ifconfig, netstat, telnet etc.
 apt-get -y install net-tools xinetd telnetd
 #
-# Install audio
-apt install -y pulseaudio
-systemctl --user enable pulseaudio
+# # Install audio
+# apt install -y pulseaudio
+# systemctl --user enable pulseaudio
 #
 # Install vim
 apt-get -y install vim
@@ -88,6 +88,7 @@ runuser -l vagrant -c "curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v${
 # This is cause because libssl1.0.0 is not installed be default and is no longer available through the repos.
 wget http://security.debian.org/debian-security/pool/updates/main/o/openssl/libssl1.0.0_1.0.1t-1+deb8u12_amd64.deb -P /tmp
 apt install -y /tmp/libssl1.0.0_1.0.1t-1+deb8u12_amd64.deb
+sudo apt install -y gstreamer1.0-plugins-ugly
 wget https://download.cdn.viber.com/cdn/desktop/Linux/viber.deb -P /tmp
 apt install -y /tmp/viber.deb
 #
@@ -99,7 +100,8 @@ echo '' >> /etc/sysctl.conf
 sysctl -p
 #
 # Install Desktop environment
-apt -y install kde-plasma-desktop
+apt update
+apt -y install kubuntu-desktop
 #
 # Clean up
 apt-get autoremove -y
