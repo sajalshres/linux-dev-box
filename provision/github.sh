@@ -115,11 +115,6 @@ fi
 # Check if ssh key pair works
 if github-authenticated; then
     echo "GITHUB: SSH key pair setup successfully"
-    # Git Config
-    echo "GITHUB: Setting config username ${USER_NAME}"
-    git config --global user.name "${USER_NAME}"
-    echo "GITHUB: Setting config email ${EMAIL}"
-    git config --global user.email "${EMAIL}"
     exit 0
 else
     echo "GITHUB: Some problem in SSH key pair generation, please check logs"

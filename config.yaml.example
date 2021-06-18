@@ -33,6 +33,17 @@ vm:
     source: d:/
     destination: /d
 provisioners:
+  - base:
+      enable: true
+      type: shell
+      path: provision/base.sh
+      privileged: false
+      arguments:
+        # Sets timezone
+        - value: timezone=Asia/Kathmandu
+        # Set git config to appear on commit logs
+        - value: git_username=<git-username>
+        - value: git_email=<git-username>
   - github:
       # This step will check if github can be authenticated,
       # It will generate new keys and add it to github
@@ -64,7 +75,7 @@ provisioners:
         - value: port=<bitbucket-server-port>
         - value: username=<atlassian-username>
         - value: password=<your-password>
-        - value: email=s<your-email@example.com>
+        - value: email=<your-email@example.com>
         - value: title=<your-ssh-key-title>
   - repositories:
       enable: enable
@@ -74,8 +85,8 @@ provisioners:
       arguments:
         # Your git repositories
         - value: git@github.com:sajalshres/linux-dev-box.git
-  - custom:
+  - extras:
       enable: false
       type: shell
-      path: provision/custom.sh
+      path: provision/extras.sh
       privileged: false

@@ -126,11 +126,6 @@ fi
 # Check if ssh key pair works
 if bitbucket-authenticated; then
     echo "BITBUCKET: SSH key pair setup successfully"
-    # Git Config
-    echo "BITBUCKET: Setting config username ${USER_NAME}"
-    git config --global user.name "${USER_NAME}"
-    echo "BITBUCKET: Setting config email ${EMAIL}"
-    git config --global user.email "${EMAIL}"
     exit 0
 else
     echo "BITBUCKET: Some problem in SSH key pair generation, please check logs"
